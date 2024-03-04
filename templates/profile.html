@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block pageTitle %} Profile {% endblock pageTitle %}
+{% load static %}
+{% block body %}
+  {% include "create_blog.html" %}
+  <script src="{% static 'BlogApp/js/blogs.js' %}"></script>
+{% endblock body %}

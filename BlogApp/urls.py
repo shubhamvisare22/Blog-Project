@@ -5,8 +5,8 @@ print(blog_view)
 
 urlpatterns = [
     
-    # path("user-dashboard", views.user_dashboard, name="user_dashboard"),
-    # path("create-blog", views.create_blog, name="create_blog"),
+    
+    path("", views.user_dashboard, name="user_dashboard"),
     
     # ----------------------------- Author Blog Views --------------------------------
     path('create/', blog_view.create_blog, name='create_blog'),
