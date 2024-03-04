@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Login {% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-center" style="height: calc(100vh - 70px);align-items: center;">
+    <div class="card text-black bg-light  mb-3" style="max-width: 18rem; height: fit-content;">
+      <div class="card-body">
+
+        <!-- login Form -->
+        <form>
+
+          <h3 class="text-center">Login</h3>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username_id">User Name</label>
+            <input type="text" class="form-control" name="username" id="username_id" autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="pass_id">Password</label>
+            <input type="password" class="form-control" name="password" id="pass_id" autocomplete="off">
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" id="login_btn">Submit</button>
+
+            <div class="text-center my-2">
+              <p>Don't Have account? <a href="{% url 'register' %}" >Get it here</a></p>
+              
+            </div>
+          </div>
+        </form>
+        <!-- login Form End -->
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

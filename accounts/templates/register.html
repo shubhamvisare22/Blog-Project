@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %} Register {% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center" style="height: calc(110vh - 80px);align-items: center;">
+        <div class="card text-black bg-light  mb-3" style="width: 500px;height: fit-content;">
+            <div class="card-body">
+
+                <!-- messeges -->
+                {% for message in messages %}
+                <div class="container-fluid p-0">
+                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="True">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- messeges ends -->
+
+                <form action="{% url 'register' %}" method="post" class="formclass">
+                    <h3 class="text-center">Register</h3>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" name="first_name" id="first_name"
+                            value="{{form_data.first_name}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" name="last_name" id="last_name"
+                            value="{{form_data.last_name}}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Register as Author?</label>
+                        <input  type="checkbox" name="True" id="is_author">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>User Name</label>
+                        <input type="text" class="form-control" name="username" id="username"
+                            value="{{form_data.username}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" name="password" id="password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Confirm Password</label>
+                        <input type="password" class="form-control" name="confirm_password" id="confirm_password">
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" id="register_btn">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
