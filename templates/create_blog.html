@@ -1,4 +1,5 @@
 {% block body %}
+{% load static %}
 <form action="{% url 'create_blog' %}" method="post">
    {% csrf_token %}
    <div class="form-group">

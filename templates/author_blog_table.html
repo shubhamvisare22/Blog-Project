@@ -1,0 +1,44 @@
+{% load static %}
+<div class="col-sm-12 mt-4">
+  <h2>Blog Details</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Serial Number</th>
+        <th>Blog Title</th>
+        <th>Blog Content</th>
+        <th>Created Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="blogTableBody">
+      <!-- Blog data will be populated here -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal for blog actions -->
+<div
+  class="modal fade"
+  id="blogActionsModal"
+  tabindex="-1"
+  aria-labelledby="blogActionsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="blogActionsModalLabel">Blog Actions</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" id="blogActionsModalBody">
+        <!-- Blog actions (update and delete buttons) will be populated here -->
+      </div>
+    </div>
+  </div>
+</div>

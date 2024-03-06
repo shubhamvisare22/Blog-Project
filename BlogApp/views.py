@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Blog, Response, User, Comment
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -7,21 +7,49 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.db.models import Count, Q
 from django.utils import timezone
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import user_passes_test
 
 
-def user_dashboard(request):
-    if request.user.is_authenticated:
+# def user_dashboard(request):
+#     if request.user.is_authenticated:
+#         if request.user.userprofile.is_author:
+#             return render(request, "author_dashboard.html")
+#         else:
+#             return render(request, "user_dashboard.html")
+#     else:
+#         return render(request, "home.html")
+
+
+class ProfileView(View):
+    template_name = 'profile.html'
+    author_template = "author_dashboard.html"
+    reader_template = "user_dashboard.html"
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/auth/login')
+
         if request.user.userprofile.is_author:
-            return render(request, "author_dashboard.html")
+            template = self.author_template
         else:
-            return render(request, "user_dashboard.html")
-    else:
-        return render(request, "home.html")
+            template = self.reader_template
 
+        return render(request, template)
+
+
+def is_author(user):
+    return user.is_authenticated and user.userprofile.is_author
+
+
+class AuthorRequiredMixin:
+    @method_decorator(user_passes_test(is_author))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class BlogView(View):
+class BlogView(LoginRequiredMixin, AuthorRequiredMixin, View):
     def create_blog(self, request):
         if request.method != "POST":
             return JsonResponse({"status": 0, "msg": "Invalid request method"})
@@ -87,6 +115,11 @@ class BlogView(View):
 
         except Exception as e:
             return JsonResponse({"status": 0, "msg": str(e)})
+    
+    def show_all_blogs(self,request):
+        print(request.user.username)
+        blog_obj = Blog.objects.filter(author__user__id = request.user.id).values()
+        return JsonResponse({"blogs":list(blog_obj)}, safe=False)
 
     def blogs_by_author(self, request, author_id):
         # 1. Blogs of a Specific author/User with likes, dislikes, comments count

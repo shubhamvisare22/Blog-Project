@@ -18,14 +18,14 @@ $(document).ready(function () {
       };
 
       $.ajax({
-        url: "/auth/",
+        url: "/auth/login",
         method: "POST",
         data: myData,
         dataType: "json",
         success: function (data) {
           if (data.status == 1) {
             toastr.options.onShown = function () {
-              window.location.assign("profile");
+              window.location.assign("/blogs/profile");
             };
             toastr.success("Successfully Logged in", "", { timeOut: 1000 });
           } else {
@@ -42,13 +42,12 @@ $(document).ready(function () {
   // Registration
   $("#register_btn").click(function (e) {
     e.preventDefault();
-    const redirectUrl = "/auth/";
+    // const redirectUrl = "/auth/login";
 
     let first_name = $("#first_name").val().trim();
     let last_name = $("#last_name").val().trim();
     let username = $("#username").val().trim();
     let is_author = $("#is_author").prop("checked");
-    console.log("++++++++++++++++++++++++++++ is author:", is_author);
     let password = $("#password").val().trim();
     let confirm_password = $("#confirm_password").val().trim();
     let csrf = $("input[name=csrfmiddlewaretoken]").val();
@@ -88,7 +87,7 @@ $(document).ready(function () {
               "#is_author"
             ).val("");
             toastr.options.onShown = function () {
-              window.location.assign(redirectUrl);
+              window.location.assign("/auth/login");
             };
             toastr.success("Registered Successfully.", "", { timeOut: 1000 });
           } else {
@@ -105,14 +104,14 @@ $(document).ready(function () {
     let csrf = $("input[name=csrfmiddlewaretoken]").val();
 
     $.ajax({
-      url: "logout",
+      url: "/auth/logout",
       method: "POST",
       data: { csrfmiddlewaretoken: csrf },
       dataType: "json",
       success: function (data) {
         if (data.status === 1) {
           toastr.options.onShown = function () {
-            window.location.assign("profile");
+            window.location.assign("/auth/login");
           };
           toastr.success("Logged out Successfully.", "", { timeOut: 1000 });
         }

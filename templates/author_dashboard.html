@@ -2,3 +2,13 @@
 {% block pageTitle %}
 Author
 {% endblock pageTitle %}
+
+{% load static %}
+{% block body %}
+  <div id="createBlogForm">
+    {% include "create_blog.html" %}
+  </div>
+  <div id="blogContainer" style="display: none;">
+    {% include "author_blog_table.html" %}
+  </div>
+{% endblock body %}
