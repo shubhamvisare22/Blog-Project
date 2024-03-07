@@ -132,7 +132,7 @@ class BlogView(LoginRequiredMixin, AuthorRequiredMixin, View):
         blogs = Blog.objects.filter(author__user__id=author_id).annotate(
             comment_count=Count('comment')).order_by('-comment_count')[:5]
         data = [{'blog_id': blog.id, 'name': blog.name,
-                 'comment_count': blog.comment_count} for blog in blogs]
+                 'comment_count': blog.comment_count, 'blog_content':blog.content} for blog in blogs]
         return JsonResponse(data, safe=False)
 
     def top_liked_disliked_blogs(self, request, author_id):

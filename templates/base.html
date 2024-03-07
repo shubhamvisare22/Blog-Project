@@ -35,28 +35,41 @@
     <!-- Navbar ends -->
     {% if request.user.is_authenticated and request.user.userprofile.is_author  %}
     <div class="sidebar">
-        <a class="active" href="#home">Home</a>
-        <form action="{% url 'show_all_blogs' %}" method="get"> {% csrf_token %} <a class="nav-link" id="show_blog" href=""> My Blogs </a>
-        {% comment %} <a href="{% url 'show_all_blogs' %}">My blogs</a> {% endcomment %}
-        <a href="#contact">Contact</a>
+        <!-- Create Blog Link -->
+         <a class="nav-link" href="#" id="show_create_blog">Create Blog</a>
+
+        <!-- Show All Blogs Link -->
+        <a class="nav-link" id="show_blog" href="{% url 'show_all_blogs' %}"> My Blogs </a>
+
+        <!-- Top Commented Blogs Link -->
+        <a class="nav-link" id="top_commented_blogs" href="{% url 'top_commented_blogs' request.user.id %}" data-author-id="{{ request.user.id }}">
+            Top 5 Commented
+        </a>
+
+        <!-- About Link -->
         <a href="#about">About</a>
     </div>
+
     <div class="container">
         <div id="blogContainer" style="display: none;">
             {% include 'author_blog_table.html' %}
         </div>
     </div>
-    
-    
-    {% else %}
+{% else %}
     <div class="sidebar">
+        <!-- Home Link -->
         <a class="active" href="#home">Home</a>
+        
+        <!-- Blogs Link -->
         <a href="#">blogs</a>
+        
+        <!-- Contact Link -->
         <a href="#contact">Contact</a>
+        
+        <!-- About Link -->
         <a href="#about">About</a>
     </div>
-
-    {% endif %}
+{% endif %}
     <div class="container"> {% block body %} {% endblock body %} </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
     <script src="{% static 'js/auth.js' %}"></script>

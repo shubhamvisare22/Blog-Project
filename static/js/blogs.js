@@ -1,4 +1,11 @@
 $(document).ready(function () {
+  $("#show_create_blog").click(function (e) {
+    e.preventDefault();
+    $("#blogContainer").hide();
+    $("#createBlogForm").show();
+    $("#blogContainer2").hide();
+  });
+
   // create blog
   $("#create_blog_btn").click(function (e) {
     e.preventDefault();
@@ -48,6 +55,7 @@ $(document).ready(function () {
     e.preventDefault();
     $("#createBlogForm").hide();
     $("#blogContainer").show();
+    $("#blogContainer2").hide();
 
     // Toggle the visibility of the blog container
     // $("#blogContainer").toggle();
@@ -69,18 +77,21 @@ $(document).ready(function () {
             row.append($("<td>").text(blog.name));
             row.append($("<td>").text(blog.content));
 
-            let dateObject = new Date(blog.created_date)
+            let dateObject = new Date(blog.created_date);
             formattedDate = dateObject.toISOString().split("T")[0];
             row.append($("<td>").text(formattedDate));
-            
 
             const actionsCell = $("<td>");
-            const updateButton = $("<button class='btn btn-success'>").text("Update");
+            const updateButton = $("<button class='btn btn-success'>").text(
+              "Update"
+            );
             updateButton.click(function () {
               console.log("Update button clicked for blog ID:", blog.id);
             });
 
-            const deleteButton = $("<button class='btn btn-danger'>").text("Delete");
+            const deleteButton = $("<button class='btn btn-danger'>").text(
+              "Delete"
+            );
             deleteButton.click(function () {
               console.log("Delete button clicked for blog ID:", blog.id);
             });
@@ -95,5 +106,39 @@ $(document).ready(function () {
         },
       });
     }
+  });
+
+  // top commented blogs
+  $("#top_commented_blogs").click(function (e) {
+    e.preventDefault();
+
+    // Hide create blog form and show blogs table container
+    $("#createBlogForm").hide();
+    $("#blogContainer").hide();
+    $("#blogContainer2").show();
+    const authorId = $(this).data("author-id");
+    // Fetch and populate top-commented blogs using jQuery and AJAX
+    $.ajax({
+      url: `top_commented/${authorId}/`,
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        // Clear existing table rows
+        // $("#commentedBlogsTable").empty();
+
+        // Populate the table with response data
+        $.each(data, function (index, blog) {
+          const row = $("<tr>");
+          row.append($("<td>").text(index + 1));
+          row.append($("<td>").text(blog.name));
+          row.append($("<td>").text(blog.comment_count));
+          row.append($("<td>").text(blog.content));
+          $("#commentedBlogsTable").append(row);
+        });
+      },
+      error: function (error) {
+        console.error("Error fetching top commented blogs:", error);
+      },
+    });
   });
 });
